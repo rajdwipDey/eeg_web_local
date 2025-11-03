@@ -4,5 +4,6 @@ export const API = {
   forgotPassword: "/auth/forgot-password",
   resetPassword: "/auth/reset-password",
   changePassword: "/auth/change-password",
+  profile: "/auth/profile",
   logout: ""
 };

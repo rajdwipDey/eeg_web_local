@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { User, Home, MapPin, ShoppingCart, Shield, Bell, AlertTriangle, Save, Download, UserMinus, Trash2, Camera, Check } from 'lucide-react';
 import { useNotification } from '@/src/hooks/useNotification';
 import { usePreferences } from '@/src/hooks/usePreferences';
@@ -13,10 +13,14 @@ import ProfilePictureSection from '@/src/components/profile/ProfilePictureSectio
 import AccountStatusCard from '@/src/components/profile/AccountStatusCard';
 
 export default function ProfileSettingsPage() {
-  const { profile, updateProfile, loading: profileLoading } = useProfile();
+  const { profile, updateProfile, fetchProfile, setProfile, loading: profileLoading } = useProfile();
   const { preferences, updatePreference, loading: preferencesLoading } = usePreferences();
   const { notification, showNotification, hideNotification } = useNotification();
 
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +36,7 @@ export default function ProfileSettingsPage() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
-    input.onchange = (e) => {
+    input.onchange = (e:any) => {
       const file = e.target.files[0];
       if (file) {
         if (file.size > 5 * 1024 * 1024) {
@@ -40,7 +44,7 @@ export default function ProfileSettingsPage() {
           return;
         }
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = (e:any) => {
           setProfile({ ...profile, profileImage: e.target.result });
           showNotification('Profile picture updated!', 'success');
         };
