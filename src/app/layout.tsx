@@ -5,6 +5,8 @@ import { ThemeToggle } from '../components/common/ThemeToggle'
 import './globals.css'
 import { ThemeScript } from './ThemeScript'
 import StoreProvider from '../lib/store/StoreProvider'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -36,6 +38,7 @@ export default function RootLayout({
           <ThemeProvider>
             {children}
             <ThemeToggle />
+            <ToastContainer />
           </ThemeProvider>
         </StoreProvider>
       </body>

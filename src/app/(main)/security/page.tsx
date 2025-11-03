@@ -2,12 +2,14 @@
 'use client'
 
 import { useState } from 'react'
+import { authService } from '@/src/services/authService'
 import Link from 'next/link'
 import PageHeader from '@/src/components/common/PageHeader'
 import { NavigationTabs } from '@/src/components/dashboard/NavigationTabs'
 import { mockNavItems } from '@/src/dummyData/dashboardData'
 import { Home,MapPin, Shield, ShoppingCart, User } from 'lucide-react'
 import DashboardNav from '@/src/components/profile/DashboardNav'
+import { showToast } from '@/src/config/toastConfig'
 
 export default function Security() {
   const [passwordForm, setPasswordForm] = useState({
@@ -58,19 +60,25 @@ export default function Security() {
     })
   }
 
-  const handlePasswordSubmit = (e:any) => {
+  const handlePasswordSubmit = async (e:any) => {
     e.preventDefault()
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       alert('Passwords do not match!')
       return
     }
-    console.log('Password change submitted')
-    alert('Password updated successfully!')
-    setPasswordForm({
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: ''
-    })
+    
+    try {
+      await authService.changePassword(passwordForm.currentPassword, passwordForm.newPassword)
+      // alert('Password updated successfully!')
+      showToast.success('Password updated successfully!')
+      setPasswordForm({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      })
+    } catch (error: any) {
+      showToast.error(error.message || 'Failed to update password. Please try again.')
+    }
   }
 
   const toggle2FA = () => {

@@ -28,7 +28,7 @@ class AuthService {
   }
 
   async changePassword(currentPassword: string, newPassword: string): Promise<void> {
-    await apiService.put(API.changePassword, { currentPassword, newPassword });
+    await apiService.put(API.changePassword, { oldPassword: currentPassword, newPassword: newPassword });
   }
 
   async logout(): Promise<void> {
