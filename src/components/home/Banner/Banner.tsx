@@ -14,7 +14,8 @@ export default function Banner() {
         slidesPerView={1}
         loop={true}
         pagination={{ clickable: true }}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        // autoplay={{ delay: 5000, disableOnInteraction: false }}
+        autoplay={false}
         effect="fade"
         className="h-screen"
       >
@@ -34,7 +35,7 @@ export default function Banner() {
                   <h5 className="text-[14px] font-light text-white">
                     Effective MRI Safety Warning Signage System That Keeps Patients and Healthcare Staff Safe
                   </h5>
-                  <h2 className="font-bold text-[44px] text-white my-4 leading-tight">
+                  <h2 className="font-bold text-[28px] lg:text-[44px] text-white my-4 leading-tight">
                     TechGate Auto: Automatic MRI Caution Barrier
                   </h2>
                   <p className="text-[16px] font-light text-white/70">
@@ -73,7 +74,7 @@ export default function Banner() {
                 <h5 className="text-[14px] font-light text-[#005d90]">
                   We are Always on Guard for Your Family and Business
                 </h5>
-                <h2 className="font-bold text-[60px] text-[#005d90] my-4 leading-tight">
+                <h2 className="font-bold text-[28px] lg:text-[60px] text-[#005d90] my-4 leading-tight">
                   Top Modern Technology <br /> on TechGate Auto
                 </h2>
                 <p className="text-[20px] font-light text-gray-500 dark:text-gray-400">
@@ -106,12 +107,12 @@ export default function Banner() {
             <div className="flex items-center justify-center h-full relative z-10">
               <div className="container mx-auto">
                 <div className="flex">
-                  <div className="w-full md:w-1/2"></div>
-                  <div className="w-full md:w-1/2">
+                  <div className="w-full md:w-1/2 lg:flex hidden"></div>
+                  <div className="w-full md:w-1/2 px-10 md:px-0 lg:px-0">
                     <h5 className="text-[14px] font-light text-[#005d90]">
                       The most experienced
                     </h5>
-                    <h2 className="font-bold text-[60px] text-[#005d90] my-4 leading-tight">
+                    <h2 className="font-bold text-[28px] lg:text-[60px] text-[#005d90] my-4 leading-tight">
                       TechGate Auto: Automatic MRI Caution Barrier
                     </h2>
                     <p className="text-[20px] font-light">

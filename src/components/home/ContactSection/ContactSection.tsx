@@ -3,7 +3,7 @@
 export default function ContactSection() {
   return (
     <section
-      className="py-[100px] relative overflow-hidden"
+      className="py-[100px] px-4 md:px-10 lg:px-14 relative overflow-hidden"
       style={{
         backgroundImage: "url('/img/bg-workers1.jpg')",
         backgroundSize: "cover",

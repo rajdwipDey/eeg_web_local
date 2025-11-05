@@ -66,13 +66,13 @@ export default function Home() {
 
       <PremiumServices />
 
-      <section className="min-h-[500px] flex items-center justify-center relative">
+      <section className="lg:min-h-[500px] min-h-[180px] px-4 md:px-10 lg:px-14 flex items-center justify-center relative">
         <VideoCard
           videoSrc="#"
           thumbnailSrc="/img/video-banner.jpg"
           alt="Video Banner"
           tooltip="Play Video"
-          className="w-[300px] md:w-[400px] lg:w-[500px]"
+          className="w-[100%] md:w-[400px] lg:w-[500px]"
         />
       </section>
       <SecuritySection />

@@ -78,7 +78,7 @@ export default function TestimonialSection() {
     }
   }, [swiperInstance]);
   return (
-    <section className="py-20 bg-[#F8F8F8] dark:bg-gray-950">
+    <section className="py-20 px-4 md:px-10 lg:px-14 bg-[#F8F8F8] dark:bg-gray-950">
       <div className="container mx-auto text-center mb-12">
         <h1 className="mb-6">
           <span className="text-[#102030] dark:text-[#42b3e5] text-sm font-medium uppercase block mb-4">

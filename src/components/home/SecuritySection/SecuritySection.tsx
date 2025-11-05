@@ -13,7 +13,7 @@ export default function SecuritySection() {
   ];
 
   return (
-    <section className="py-20">
+    <section className="py-20 px-4 md:px-10 lg:px-14">
       <div className="container mx-auto">
         <div className="w-[80%]">
           <h1 className="mb-6">
@@ -48,7 +48,7 @@ export default function SecuritySection() {
             </p>
 
             {/* Wrapper to mimic the overflow trick */}
-            <div className="relative left-[-50%] w-[150%]">
+            <div className="relative md:left-[-50%] left-[-1.8%] md:w-[150%] w-[105%]">
               <ul className="bg-[#6fb43f] p-14 grid grid-cols-1 md:grid-cols-2 gap-5 rounded-3xl dark:bg-gray-950">
                 {features.map((feature, idx) => (
                   <li key={idx} className="flex gap-2 items-center">

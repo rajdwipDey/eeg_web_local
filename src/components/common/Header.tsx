@@ -156,6 +156,18 @@ export default function Header() {
 
   const toggleMenu = (): void => setIsMenuOpen(!isMenuOpen);
 
+  // Close menu when window is resized to desktop size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const toggleAccountDropdown = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     e.stopPropagation();
@@ -185,30 +197,39 @@ export default function Header() {
 
   return (
     <header className={`sticky top-0 z-50 bg-white dark:bg-gray-900 transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+      
       {/* Top Header */}
-      <div className="top-header py-3 border-b border-gray-200 dark:border-gray-700 transition-colors flex items-center justify-evenly px-10 md:px-20">
-        <div className="flex items-start gap-6 w-full">
-          <a href={HEADER_DATA.topBar.contact.phone.href} className="flex items-center gap-2 text-sm hover:text-[#6fb43f] transition-colors">
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <div className="top-header py-2 md:py-3 border-b border-gray-200 dark:border-gray-700 transition-colors hidden sm:flex items-center justify-between px-4 md:px-10 lg:px-14">
+        <div className="flex items-center gap-4 lg:gap-6 flex-1">
+          <a href={HEADER_DATA.topBar.contact.phone.href} className="flex items-center gap-2 text-xs md:text-sm hover:text-[#6fb43f] transition-colors whitespace-nowrap">
+            <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d={ICONS.phone} stroke="currentColor" strokeWidth="1.5" />
             </svg>
-            {HEADER_DATA.topBar.contact.phone.number}
+            <span className="hidden lg:inline">{HEADER_DATA.topBar.contact.phone.number}</span>
+            <span className="lg:hidden">1-844-423-4976</span>
           </a>
-          <a href={HEADER_DATA.topBar.contact.email.href} className="flex items-center gap-2 text-sm hover:text-[#6fb43f] transition-colors">
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <a href={HEADER_DATA.topBar.contact.email.href} className="hidden xl:flex items-center gap-2 text-xs md:text-sm hover:text-[#6fb43f] transition-colors">
+            <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d={ICONS.email} stroke="currentColor" strokeWidth="1.5" />
             </svg>
-            {HEADER_DATA.topBar.contact.email.address}
+            <span className="hidden xl:inline">{HEADER_DATA.topBar.contact.email.address}</span>
           </a>
         </div>
-        <div className="flex items-center gap-2 w-full text-sm">
-          <Link href={HEADER_DATA.topBar.cta.href} className="bg-[#6fb43f] text-white px-3 py-1 rounded-lg font-semibold text-xs inline-block hover:bg-[#5fa335] transition-colors">
+        <div className="flex items-center gap-2 flex-1 justify-center">
+          <Link href={HEADER_DATA.topBar.cta.href} className="bg-[#6fb43f] text-white px-2 md:px-3 py-1 rounded-lg font-semibold text-xs inline-block hover:bg-[#5fa335] transition-colors whitespace-nowrap">
             {HEADER_DATA.topBar.cta.text}
           </Link>
-          <span className="hidden lg:inline">{HEADER_DATA.topBar.tagline}</span>
+          <span className="hidden xl:inline text-sm">{HEADER_DATA.topBar.tagline}</span>
         </div>
-        <div className="w-full flex items-center justify-end gap-2 text-sm">
-          <span className="text-gray-500 dark:text-gray-400 hidden md:inline">{HEADER_DATA.topBar.social.label}</span>
+        <div className="flex items-center justify-end gap-1 md:gap-2 flex-1">
+          <span className="text-gray-500 dark:text-gray-400 hidden lg:inline text-sm">{HEADER_DATA.topBar.social.label}</span>
           {HEADER_DATA.topBar.social.links.map((social) => (
             <a
               key={social.id}
@@ -216,7 +237,7 @@ export default function Header() {
               className="dark:text-gray-400 font-semibold text-[#6fb43f] flex items-center gap-1 hover:text-[#5fa335] transition-colors"
               aria-label={social.name}
             >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d={social.icon} />
               </svg>
             </a>
@@ -225,8 +246,8 @@ export default function Header() {
       </div>
 
       {/* Main Header */}
-      <div className="px-10 md:px-20">
-        <div className="flex items-center justify-between py-4">
+      <div className="px-4 md:px-10 lg:px-14">
+        <div className="flex items-center justify-between py-3 md:py-4">
           {/* Logo */}
           <div className="flex items-center gap-2">
             <Link href="/">
@@ -235,35 +256,38 @@ export default function Header() {
                 alt={HEADER_DATA.logo.alt}
                 width={HEADER_DATA.logo.width}
                 height={HEADER_DATA.logo.height}
-                className="w-[150px] h-auto"
+                className="w-[120px] md:w-[150px] h-auto"
               />
             </Link>
           </div>
 
-          <Link
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              toggleMenu();
-            }}
-            className="menu-togg p-1 bg-gray-200 dark:bg-gray-600 rounded-sm shadow-2xl my-4 hover:shadow-xl z-50 md:hidden"
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={toggleMenu}
+            className="p-2 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors md:hidden"
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
-            <svg className="size-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 7L4 7" stroke="#F89921" strokeWidth="1.5" strokeLinecap="round" />
-              <path opacity="0.7" d="M15 12L4 12" stroke="#F89921" strokeWidth="1.5" strokeLinecap="round" />
-              <path opacity="0.4" d="M9 17H4" stroke="#F89921" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </Link>
+            {isMenuOpen ? (
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M6 6L18 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            )}
+          </button>
 
           {/* Desktop Navigation */}
-          <nav className={`${isMenuOpen ? 'block' : 'hidden'} md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white dark:bg-gray-900 md:bg-transparent shadow-lg md:shadow-none z-40`}>
-            <ul className="flex flex-col md:flex-row items-start md:items-center gap-0 md:gap-2 p-4 md:p-0">
+          <nav className={`${isMenuOpen ? 'block' : 'hidden'} md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white dark:bg-gray-900 md:bg-transparent shadow-lg md:shadow-none z-40 transition-all duration-300`}>
+            <ul className="flex flex-col md:flex-row items-start md:items-center gap-0 md:gap-1 lg:gap-2 p-2 md:p-0">
               {HEADER_DATA.navigation.map((item) => (
-                <li key={item.id}>
+                <li key={item.id} className="w-full md:w-auto">
                   <Link
                     href={item.href}
-                    className="text-sm font-medium py-3 px-4 block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    className="text-sm lg:text-base font-medium py-3 px-4 lg:py-3 lg:px-4 block text-gray-700 dark:text-gray-300 hover:text-[#6fb43f] dark:hover:text-white transition-colors border-b md:border-b-0 border-gray-100 dark:border-gray-800 md:border-transparent"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -274,16 +298,16 @@ export default function Header() {
           </nav>
 
           {/* Right Side Icons */}
-          <div>
-            <ul className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
+            <ul className="flex items-center gap-1 md:gap-2">
               {/* Account Dropdown */}
               <li className="relative account-dropdown">
                 <button
                   onClick={toggleAccountDropdown}
-                  className="text-sm font-medium py-3 px-1 inline-block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm font-medium p-2 inline-block text-gray-700 dark:text-gray-300 hover:text-[#6fb43f] dark:hover:text-white transition-colors"
                   aria-label="Account menu"
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle opacity="0.5" cx="12" cy="9" r="3" stroke="currentColor" strokeWidth="1.5" />
                     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
                     <path opacity="0.5" d={ICONS.account} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -292,7 +316,7 @@ export default function Header() {
 
                 {/* Account Dropdown Menu */}
                 {isAccountDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                  <div className="absolute right-0 mt-2 w-48 md:w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
                     {HEADER_DATA.accountMenu.map((item) => {
                       if (item.isLogout && !isAuthenticated) {
                         return null;
@@ -302,9 +326,9 @@ export default function Header() {
                         <button
                           key={item.id}
                           onClick={(e) => handleMenuClick(item, e)}
-                          className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                          className="w-full flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                         >
-                          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d={item.icon} stroke="currentColor" strokeWidth="1.5" />
                           </svg>
                           <span>{item.label}</span>
@@ -313,10 +337,10 @@ export default function Header() {
                         <Link
                           key={item.id}
                           href={item.href}
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                          className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                           onClick={() => handleMenuClick(item, {} as React.MouseEvent)}
                         >
-                          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d={item.icon} stroke="currentColor" strokeWidth="1.5" />
                           </svg>
                           <span>{item.label}</span>
@@ -331,10 +355,10 @@ export default function Header() {
               <li>
                 <Link
                   href="/cart"
-                  className="text-sm font-medium py-3 px-1 inline-block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm font-medium p-2 inline-block text-gray-700 dark:text-gray-300 hover:text-[#6fb43f] dark:hover:text-white transition-colors"
                   aria-label="Shopping cart"
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d={ICONS.cart} stroke="currentColor" strokeWidth="1.5" />
                   </svg>
                 </Link>

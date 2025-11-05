@@ -3,7 +3,7 @@ import { services } from "./servicesData";
 import ServiceCard from "./ServiceCard";
 
 const PremiumServices: React.FC = () => (
-  <section className="py-20">
+  <section className="py-20 px-4 md:px-10 lg:px-14">
     <div className="container mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Left Text Section */}
